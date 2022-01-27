@@ -1,4 +1,7 @@
 # walkthrough of https://docs.microsoft.com/en-us/azure/azure-web-pubsub/tutorial-build-chat?tabs=java
+# install cli (I should put this in the dev container)
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
 # Create the resource group
 
 az group create --name "webpubsub" -l "WestEurope"
