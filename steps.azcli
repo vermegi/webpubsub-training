@@ -1,0 +1,13 @@
+# walkthrough of https://docs.microsoft.com/en-us/azure/azure-web-pubsub/tutorial-build-chat?tabs=java
+# Create the resource group
+
+az group create --name "webpubsub" -l "WestEurope"
+
+# Create web pub sub instance
+
+az webpubsub create --name "gittewebpubsub" --resource-group "webpubsub" --location "WestEurope" --sku Free_F1
+
+# Get the ConnectionString for future use
+
+az webpubsub key show --name "gittewebpubsub" --resource-group "webpubsub" --query primaryConnectionString
+
