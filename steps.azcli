@@ -1,18 +1,17 @@
 # walkthrough of https://docs.microsoft.com/en-us/azure/azure-web-pubsub/tutorial-build-chat?tabs=java
 # install cli (I should put this in the dev container)
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+az login --use-device-use-device-code
 
 # Create the resource group
-
 az group create --name "webpubsub" -l "WestEurope"
 
 # Create web pub sub instance
-
 az webpubsub create --name "gittewebpubsub" --resource-group "webpubsub" --location "WestEurope" --sku Free_F1
 
 # Get the ConnectionString for future use
-
 az webpubsub key show --name "gittewebpubsub" --resource-group "webpubsub" --query primaryConnectionString
+CONNECTIONSTRING=$(az webpubsub key show --name "gittewebpubsub" --resource-group "webpubsub" --query primaryConnectionString)
 
 # Create the application
 
@@ -21,4 +20,10 @@ cd src
 
 mvn archetype:generate --define interactiveMode=n --define groupId=com.webpubsub.tutorial --define artifactId=webpubsub-tutorial-chat --define archetypeArtifactId=maven-archetype-quickstart --define archetypeVersion=1.4
 cd webpubsub-tutorial-chat
+
+# Compile 
+mvn compile & mvn package & mvn exec:java -Dexec.mainClass="com.webpubsub.tutorial.App" -Dexec.cleanupDaemonThreads=false -Dexec.args="$CONNECTIONSTRING"
+
+# Set event handler (when doing this in code spaces, yuo don't need ngrok ... you do need to make the forwarded port from code space PUBLIC!)
+az webpubsub hub create -n "gittewebpubsub" -g "webpubsub" --hub-name "chat" --event-handler url-template="https://myinstance-8080.githubpreview.dev/eventhandler" user-event-pattern="*" system-event="connected"
 
