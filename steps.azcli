@@ -11,3 +11,11 @@ az webpubsub create --name "gittewebpubsub" --resource-group "webpubsub" --locat
 
 az webpubsub key show --name "gittewebpubsub" --resource-group "webpubsub" --query primaryConnectionString
 
+# Create the application
+
+mkdir src
+cd src
+
+mvn archetype:generate --define interactiveMode=n --define groupId=com.webpubsub.tutorial --define artifactId=webpubsub-tutorial-chat --define archetypeArtifactId=maven-archetype-quickstart --define archetypeVersion=1.4
+cd webpubsub-tutorial-chat
+
